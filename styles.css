@@ -1,6 +1,6 @@
 /* ==========================================================================
    RESTAURANT EL PALADAR — SABOR CASERO
-   Modern Static Website Stylesheet (HTML5 + CSS3)
+   Modern Multi-Page Static Website Stylesheet (HTML5 + CSS3)
    ========================================================================== */
 
 :root {
@@ -38,7 +38,8 @@
 
   /* Layout */
   --container-max: 1240px;
-  --header-height: 80px;
+  --topbar-height: 40px;
+  --header-height: 78px;
   --transition: 0.28s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
@@ -53,7 +54,6 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: calc(var(--header-height) + 16px);
   font-size: 16px;
 }
 
@@ -64,6 +64,13 @@ body {
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  flex: 1;
 }
 
 img {
@@ -96,57 +103,69 @@ button {
   padding: 0 1.5rem;
 }
 
-/* Section Common */
-.section {
-  padding: 5.5rem 0;
+/* ==========================================================================
+   TOP RESERVATION ANNOUNCEMENT BAR
+   ========================================================================== */
+.top-announcement {
+  background: linear-gradient(90deg, #d95300 0%, #f9690c 50%, #b84300 100%);
+  color: #ffffff;
+  font-size: 0.86rem;
+  font-weight: 600;
+  padding: 0.5rem 0;
+  position: relative;
+  z-index: 1001;
 }
 
-.section-header {
+.top-announcement-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
   text-align: center;
-  max-width: 680px;
-  margin: 0 auto 3.25rem;
 }
 
-.section-eyebrow {
+.top-announcement-badge {
+  background: #ffffff;
+  color: var(--primary-dark);
+  font-weight: 800;
+  font-size: 0.74rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 0.2rem 0.65rem;
+  border-radius: var(--radius-pill);
+}
+
+.top-announcement-cta {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  font-size: 0.85rem;
+  gap: 0.35rem;
+  background: rgba(22, 18, 15, 0.9);
+  color: #ffffff;
   font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: var(--primary);
-  background: var(--primary-light);
-  padding: 0.4rem 1rem;
+  font-size: 0.8rem;
+  padding: 0.28rem 0.85rem;
   border-radius: var(--radius-pill);
-  margin-bottom: 0.9rem;
+  transition: all var(--transition);
 }
 
-.section-title {
-  font-family: var(--font-display);
-  font-size: clamp(2rem, 4vw, 2.85rem);
-  font-weight: 700;
-  color: var(--text-main);
-  line-height: 1.2;
-  margin-bottom: 0.75rem;
-}
-
-.section-subtitle {
-  font-size: 1.08rem;
-  color: var(--text-muted);
+.top-announcement-cta:hover {
+  background: #ffffff;
+  color: var(--bg-dark);
+  transform: translateY(-1px);
 }
 
 /* ==========================================================================
    NAVBAR
    ========================================================================== */
 .navbar {
-  position: fixed;
+  position: sticky;
   top: 0;
   left: 0;
   width: 100%;
   height: var(--header-height);
   z-index: 1000;
-  background: rgba(22, 18, 15, 0.92);
+  background: rgba(22, 18, 15, 0.96);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
@@ -154,9 +173,7 @@ button {
 }
 
 .navbar.scrolled {
-  height: 72px;
-  background: rgba(22, 18, 15, 0.98);
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.28);
 }
 
 .nav-container {
@@ -164,7 +181,7 @@ button {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1.5rem;
+  gap: 1.25rem;
 }
 
 .nav-brand {
@@ -203,17 +220,18 @@ button {
 .nav-link:hover,
 .nav-link.active {
   color: #ffffff;
-  background: rgba(249, 105, 12, 0.18);
+  background: rgba(249, 105, 12, 0.2);
 }
 
 .nav-link.active {
   color: var(--primary);
+  font-weight: 700;
 }
 
 .nav-actions {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.65rem;
 }
 
 .btn {
@@ -244,7 +262,7 @@ button {
 .btn-outline {
   background: rgba(255, 255, 255, 0.1);
   color: #ffffff;
-  border: 1.5px solid rgba(255, 255, 255, 0.3);
+  border: 1.5px solid rgba(255, 255, 255, 0.35);
   backdrop-filter: blur(6px);
 }
 
@@ -252,6 +270,17 @@ button {
   background: #ffffff;
   color: var(--bg-dark);
   border-color: #ffffff;
+  transform: translateY(-2px);
+}
+
+.btn-whatsapp {
+  background: #25d366;
+  color: #ffffff;
+  box-shadow: 0 8px 20px rgba(37, 211, 102, 0.28);
+}
+
+.btn-whatsapp:hover {
+  background: #1ebe5b;
   transform: translateY(-2px);
 }
 
@@ -293,80 +322,171 @@ button {
 }
 
 /* ==========================================================================
-   HERO SECTION
+   COMMON SECTION & INNER PAGE HEADER
    ========================================================================== */
-.hero {
-  position: relative;
-  min-height: 92vh;
-  padding-top: calc(var(--header-height) + 3rem);
-  padding-bottom: 4.5rem;
-  display: flex;
-  align-items: center;
-  background-color: var(--bg-dark);
-  overflow: hidden;
+.section {
+  padding: 4.5rem 0;
 }
 
-.hero-bg {
+.section-header {
+  text-align: center;
+  max-width: 680px;
+  margin: 0 auto 3rem;
+}
+
+.section-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.84rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--primary);
+  background: var(--primary-light);
+  padding: 0.4rem 1rem;
+  border-radius: var(--radius-pill);
+  margin-bottom: 0.85rem;
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  font-weight: 700;
+  color: var(--text-main);
+  line-height: 1.2;
+  margin-bottom: 0.7rem;
+}
+
+.section-subtitle {
+  font-size: 1.06rem;
+  color: var(--text-muted);
+}
+
+.page-hero {
+  background: linear-gradient(135deg, #16120f 0%, #2b1d14 100%);
+  color: #ffffff;
+  padding: 3.5rem 0;
+  border-bottom: 3px solid var(--primary);
+  text-align: center;
+}
+
+.page-hero .section-eyebrow {
+  background: rgba(249, 105, 12, 0.2);
+  color: #ffd6bc;
+  border: 1px solid rgba(249, 105, 12, 0.4);
+}
+
+.page-hero .section-title {
+  color: #ffffff;
+  margin-bottom: 0.5rem;
+}
+
+.page-hero .section-subtitle {
+  color: rgba(255, 255, 255, 0.78);
+  max-width: 620px;
+  margin: 0 auto;
+}
+
+/* ==========================================================================
+   HERO SLIDER / ROTATING BANNER (INICIO)
+   ========================================================================== */
+.hero-slider {
+  position: relative;
+  min-height: 620px;
+  background-color: var(--bg-dark);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+.hero-slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.75s ease, visibility 0.75s ease;
+  display: flex;
+  align-items: center;
+  padding: 4rem 0 5.5rem;
+}
+
+.hero-slide.active {
+  position: relative;
+  opacity: 1;
+  visibility: visible;
+  z-index: 2;
+  width: 100%;
+}
+
+.hero-slide-bg {
   position: absolute;
   inset: 0;
   z-index: 1;
 }
 
-.hero-bg img {
+.hero-slide-bg img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: center;
-  filter: brightness(0.55) contrast(1.05);
-  transform: scale(1.02);
+  filter: brightness(0.62) contrast(1.05);
+  transform: scale(1.03);
+  transition: transform 6s ease;
 }
 
-.hero-overlay {
+.hero-slide.active .hero-slide-bg img {
+  transform: scale(1);
+}
+
+.hero-slide-overlay {
   position: absolute;
   inset: 0;
   background: linear-gradient(
-    110deg,
-    rgba(22, 18, 15, 0.92) 0%,
-    rgba(22, 18, 15, 0.76) 52%,
-    rgba(22, 18, 15, 0.45) 100%
+    105deg,
+    rgba(22, 18, 15, 0.94) 0%,
+    rgba(22, 18, 15, 0.78) 50%,
+    rgba(22, 18, 15, 0.35) 100%
   );
   z-index: 2;
 }
 
-.hero-content {
+.hero-slide-content {
   position: relative;
   z-index: 3;
-  max-width: 720px;
+  max-width: 700px;
   color: #ffffff;
 }
 
-.hero-pillars {
+.hero-promo-pill {
   display: inline-flex;
-  flex-wrap: wrap;
   align-items: center;
-  gap: 0.6rem;
-  background: rgba(249, 105, 12, 0.2);
-  border: 1px solid rgba(249, 105, 12, 0.45);
+  gap: 0.65rem;
+  background: rgba(249, 105, 12, 0.22);
+  border: 1px solid rgba(249, 105, 12, 0.55);
   color: #ffd6bc;
   padding: 0.45rem 1.1rem;
   border-radius: var(--radius-pill);
-  font-size: 0.88rem;
-  font-weight: 600;
-  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  margin-bottom: 1.25rem;
 }
 
-.hero-pillars .dot {
-  color: var(--primary);
-  font-weight: 900;
+.hero-promo-price {
+  background: var(--primary);
+  color: #ffffff;
+  font-weight: 800;
+  padding: 0.15rem 0.65rem;
+  border-radius: var(--radius-pill);
+  font-size: 0.95rem;
 }
 
 .hero-title {
   font-family: var(--font-display);
-  font-size: clamp(2.6rem, 6vw, 4.4rem);
+  font-size: clamp(2.3rem, 5.2vw, 4rem);
   font-weight: 800;
-  line-height: 1.08;
-  margin-bottom: 1.15rem;
-  letter-spacing: -0.01em;
+  line-height: 1.1;
+  margin-bottom: 1rem;
 }
 
 .hero-title span {
@@ -375,54 +495,225 @@ button {
 }
 
 .hero-lead {
-  font-size: clamp(1.1rem, 2vw, 1.35rem);
+  font-size: clamp(1.05rem, 1.8vw, 1.25rem);
   color: rgba(255, 255, 255, 0.9);
-  margin-bottom: 2.1rem;
-  max-width: 580px;
+  margin-bottom: 1.4rem;
+  max-width: 600px;
+}
+
+.hero-choices-box {
+  background: rgba(255, 255, 255, 0.08);
+  border-left: 4px solid var(--gold);
+  backdrop-filter: blur(6px);
+  padding: 0.85rem 1.15rem;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  margin-bottom: 1.85rem;
+  max-width: 560px;
+}
+
+.hero-choices-box strong {
+  display: block;
+  color: var(--gold);
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 0.2rem;
+}
+
+.hero-choices-box span {
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 0.98rem;
 }
 
 .hero-cta {
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
-  margin-bottom: 3rem;
+  gap: 0.9rem;
 }
 
-.hero-highlights {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1.25rem;
-  padding-top: 2rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.14);
+/* Slider Controls */
+.slider-controls {
+  position: absolute;
+  bottom: 1.5rem;
+  left: 0;
+  right: 0;
+  z-index: 10;
 }
 
-.hero-stat {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.75rem;
-}
-
-.hero-stat-icon {
-  width: 40px;
-  height: 40px;
-  border-radius: var(--radius-sm);
-  background: rgba(249, 105, 12, 0.2);
-  color: var(--primary);
+.slider-controls-inner {
   display: flex;
   align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
+  justify-content: space-between;
+  gap: 1rem;
 }
 
-.hero-stat-text strong {
-  display: block;
-  font-size: 0.95rem;
+.slider-tabs {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.slider-tab {
+  background: rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  color: rgba(255, 255, 255, 0.85);
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-pill);
+  font-size: 0.84rem;
+  font-weight: 700;
+  transition: all var(--transition);
+}
+
+.slider-tab:hover {
+  background: rgba(255, 255, 255, 0.25);
   color: #ffffff;
 }
 
-.hero-stat-text span {
-  font-size: 0.83rem;
-  color: rgba(255, 255, 255, 0.72);
+.slider-tab.active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #ffffff;
+  box-shadow: var(--shadow-accent);
+}
+
+.slider-arrows {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.slider-arrow {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition);
+}
+
+.slider-arrow:hover {
+  background: var(--primary);
+  border-color: var(--primary);
+}
+
+/* ==========================================================================
+   RESERVA YA BANNER SECTION
+   ========================================================================== */
+.reserva-banner {
+  background: linear-gradient(135deg, #1f1610 0%, #3a2010 100%);
+  border-radius: var(--radius-lg);
+  padding: 2.75rem 2.5rem;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  box-shadow: var(--shadow-lg);
+  border: 2px solid rgba(249, 105, 12, 0.45);
+  position: relative;
+  overflow: hidden;
+}
+
+.reserva-banner-content {
+  max-width: 640px;
+}
+
+.reserva-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: var(--primary);
+  color: #ffffff;
+  font-size: 0.8rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 0.35rem 0.9rem;
+  border-radius: var(--radius-pill);
+  margin-bottom: 0.85rem;
+}
+
+.reserva-banner h2 {
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 3.2vw, 2.35rem);
+  margin-bottom: 0.55rem;
+  line-height: 1.2;
+}
+
+.reserva-banner p {
+  color: rgba(255, 255, 255, 0.84);
+  font-size: 1.02rem;
+}
+
+.reserva-banner-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.9rem;
+  flex-shrink: 0;
+}
+
+/* ==========================================================================
+   HOME QUICK CATEGORIES GRID
+   ========================================================================== */
+.quick-cats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(135px, 1fr));
+  gap: 1.15rem;
+}
+
+.quick-cat-card {
+  background: #ffffff;
+  border: 1.5px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 1.35rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.75rem;
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition);
+}
+
+.quick-cat-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--primary);
+  box-shadow: var(--shadow-md);
+}
+
+.quick-cat-icon {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: var(--primary-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.85rem;
+  transition: transform var(--transition), background var(--transition);
+}
+
+.quick-cat-card:hover .quick-cat-icon {
+  transform: scale(1.08);
+  background: #ffe2cf;
+}
+
+.quick-cat-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.quick-cat-card strong {
+  font-family: var(--font-display);
+  font-size: 1.08rem;
+  color: var(--text-main);
 }
 
 /* ==========================================================================
@@ -450,11 +741,6 @@ button {
   width: 100%;
   height: 440px;
   object-fit: cover;
-  transition: transform 0.6s ease;
-}
-
-.about-img-wrapper:hover img {
-  transform: scale(1.03);
 }
 
 .about-badge {
@@ -485,10 +771,6 @@ button {
   line-height: 1.25;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-}
-
-.about-content .section-eyebrow {
-  margin-bottom: 0.75rem;
 }
 
 .about-content .section-title {
@@ -539,21 +821,6 @@ button {
 /* ==========================================================================
    PROMOCIONES / PAQUETES
    ========================================================================== */
-.promos-section {
-  background: var(--bg-dark);
-  color: #ffffff;
-  position: relative;
-  overflow: hidden;
-}
-
-.promos-section .section-title {
-  color: #ffffff;
-}
-
-.promos-section .section-subtitle {
-  color: rgba(255, 255, 255, 0.74);
-}
-
 .promos-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -562,6 +829,7 @@ button {
 
 .promo-card {
   background: #221c18;
+  color: #ffffff;
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: var(--radius-lg);
   overflow: hidden;
@@ -578,7 +846,7 @@ button {
 
 .promo-image {
   position: relative;
-  height: 250px;
+  height: 260px;
   overflow: hidden;
 }
 
@@ -702,10 +970,6 @@ button {
 /* ==========================================================================
    MENU SECTION (TABS, SEARCH & CARDS)
    ========================================================================== */
-.menu-section {
-  background: var(--bg-main);
-}
-
 .menu-controls {
   display: flex;
   flex-direction: column;
@@ -768,7 +1032,6 @@ button {
   display: inline-flex;
 }
 
-/* Category Filter Tabs */
 .menu-tabs {
   display: flex;
   align-items: center;
@@ -824,7 +1087,6 @@ button {
   color: #ffffff;
 }
 
-/* Category Info Banner (e.g., Carnes includes notice) */
 .category-banner {
   background: linear-gradient(90deg, var(--primary-light), var(--gold-light));
   border: 1px solid rgba(249, 105, 12, 0.25);
@@ -848,7 +1110,6 @@ button {
   flex-shrink: 0;
 }
 
-/* Menu Grid */
 .menu-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(275px, 1fr));
@@ -1012,29 +1273,39 @@ button {
 }
 
 /* ==========================================================================
-   REVIEWS / OPINIONES
+   REVIEWS / OPINIONES (4.5 STARS)
    ========================================================================== */
-.reviews-section {
-  background: var(--bg-alt);
-}
-
 .reviews-summary {
   display: inline-flex;
   align-items: center;
   gap: 0.75rem;
   background: #ffffff;
-  padding: 0.6rem 1.25rem;
+  padding: 0.65rem 1.35rem;
   border-radius: var(--radius-pill);
   box-shadow: var(--shadow-sm);
-  margin-top: 1rem;
+  margin-top: 1.15rem;
   border: 1px solid var(--border-color);
+  color: var(--text-main);
+}
+
+.rating-number {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--text-main);
 }
 
 .stars {
   color: #fbbc04;
   display: inline-flex;
-  gap: 2px;
-  font-size: 1.1rem;
+  align-items: center;
+  gap: 3px;
+  font-size: 1.15rem;
+}
+
+.stars svg {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
 }
 
 .reviews-grid {
@@ -1191,17 +1462,6 @@ button {
   border-top: 1px solid var(--border-color);
 }
 
-.btn-whatsapp {
-  background: #25d366;
-  color: #ffffff;
-  box-shadow: 0 8px 20px rgba(37, 211, 102, 0.28);
-}
-
-.btn-whatsapp:hover {
-  background: #1ebe5b;
-  transform: translateY(-2px);
-}
-
 .map-card {
   background: #ffffff;
   border-radius: var(--radius-lg);
@@ -1335,6 +1595,16 @@ button {
     grid-template-columns: 1fr;
   }
 
+  .reserva-banner {
+    flex-direction: column;
+    text-align: center;
+    padding: 2.25rem 1.75rem;
+  }
+
+  .reserva-banner-actions {
+    justify-content: center;
+  }
+
   .about-img-wrapper img {
     height: 360px;
   }
@@ -1350,7 +1620,7 @@ button {
   }
 
   .section {
-    padding: 4rem 0;
+    padding: 3.5rem 0;
   }
 
   .nav-toggle {
@@ -1368,7 +1638,7 @@ button {
     padding: 1.25rem;
     gap: 0.4rem;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    transform: translateY(-120%);
+    transform: translateY(-130%);
     opacity: 0;
     pointer-events: none;
     transition: all var(--transition);
@@ -1389,9 +1659,12 @@ button {
     display: none;
   }
 
-  .hero-highlights {
-    grid-template-columns: 1fr;
-    gap: 1rem;
+  .hero-slider {
+    min-height: 580px;
+  }
+
+  .hero-slide {
+    padding: 3rem 0 6.5rem;
   }
 
   .about-features {

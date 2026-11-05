@@ -1,6 +1,6 @@
 /* ==========================================================================
    RESTAURANT EL PALADAR — SABOR CASERO
-   Vanilla JavaScript (Menu Tabs, Live Search, Smooth Scroll & UI Interactions)
+   Vanilla JavaScript (Hero Banner Slider, Menu Tabs, Live Search & UI)
    ========================================================================== */
 
 const MENU_ITEMS = [
@@ -694,179 +694,241 @@ const MENU_ITEMS = [
 ];
 
 document.addEventListener('DOMContentLoaded', () => {
+  // =========================================================================
+  // 1. HERO ROTATING BANNER SLIDER (ON INICIO)
+  // =========================================================================
+  const heroSlider = document.getElementById('heroSlider');
+  if (heroSlider) {
+    const slides = heroSlider.querySelectorAll('.hero-slide');
+    const sliderTabs = heroSlider.querySelectorAll('.slider-tab');
+    const prevBtn = document.getElementById('sliderPrev');
+    const nextBtn = document.getElementById('sliderNext');
+    let currentSlide = 0;
+    let slideInterval;
+
+    function goToSlide(index) {
+      currentSlide = (index + slides.length) % slides.length;
+      slides.forEach((s, i) => s.classList.toggle('active', i === currentSlide));
+      sliderTabs.forEach((t, i) => t.classList.toggle('active', i === currentSlide));
+    }
+
+    function startAutoPlay() {
+      stopAutoPlay();
+      slideInterval = setInterval(() => {
+        goToSlide(currentSlide + 1);
+      }, 4500);
+    }
+
+    function stopAutoPlay() {
+      if (slideInterval) clearInterval(slideInterval);
+    }
+
+    sliderTabs.forEach((tab, index) => {
+      tab.addEventListener('click', () => {
+        goToSlide(index);
+        startAutoPlay();
+      });
+    });
+
+    if (prevBtn) {
+      prevBtn.addEventListener('click', () => {
+        goToSlide(currentSlide - 1);
+        startAutoPlay();
+      });
+    }
+
+    if (nextBtn) {
+      nextBtn.addEventListener('click', () => {
+        goToSlide(currentSlide + 1);
+        startAutoPlay();
+      });
+    }
+
+    heroSlider.addEventListener('mouseenter', stopAutoPlay);
+    heroSlider.addEventListener('mouseleave', startAutoPlay);
+
+    startAutoPlay();
+  }
+
+  // =========================================================================
+  // 2. MENU TABS, URL PARAM & LIVE SEARCH (ON MENU PAGE)
+  // =========================================================================
   const menuGrid = document.getElementById('menuGrid');
-  const menuEmpty = document.getElementById('menuEmpty');
-  const categoryBanner = document.getElementById('categoryBanner');
-  const tabButtons = document.querySelectorAll('.menu-tab');
-  const searchInput = document.getElementById('menuSearchInput');
-  const clearSearchBtn = document.getElementById('clearSearchBtn');
-  const resetMenuBtn = document.getElementById('resetMenuBtn');
+  if (menuGrid) {
+    const menuEmpty = document.getElementById('menuEmpty');
+    const categoryBanner = document.getElementById('categoryBanner');
+    const tabButtons = document.querySelectorAll('.menu-tab');
+    const searchInput = document.getElementById('menuSearchInput');
+    const clearSearchBtn = document.getElementById('clearSearchBtn');
+    const resetMenuBtn = document.getElementById('resetMenuBtn');
 
-  let activeCategory = 'desayunos';
-  let searchQuery = '';
+    // Check URL query parameter ?cat=...
+    const params = new URLSearchParams(window.location.search);
+    const requestedCat = params.get('cat');
+    const validCategories = ['desayunos', 'comal', 'especiales', 'antojitos', 'caldos', 'carnes', 'postres', 'bebidas', 'todos'];
+    let activeCategory = validCategories.includes(requestedCat) ? requestedCat : 'desayunos';
+    let searchQuery = '';
 
-  // Populate category item counts in tabs
-  function updateTabCounts() {
-    tabButtons.forEach((btn) => {
-      const cat = btn.dataset.category;
-      const countEl = btn.querySelector('.tab-count');
-      if (!countEl) return;
-      if (cat === 'todos') {
-        countEl.textContent = MENU_ITEMS.length;
-      } else {
-        const count = MENU_ITEMS.filter((item) => item.category === cat).length;
-        countEl.textContent = count;
-      }
-    });
-  }
-
-  // Render menu cards
-  function renderMenu() {
-    const q = searchQuery.trim().toLowerCase();
-
-    const filtered = MENU_ITEMS.filter((item) => {
-      const matchesCategory = activeCategory === 'todos' || item.category === activeCategory;
-      if (!q) return matchesCategory;
-
-      const variantText = (item.variants || [])
-        .map((v) => `${v.name} ${v.price}`)
-        .join(' ')
-        .toLowerCase();
-
-      const searchable = `${item.title} ${item.desc} ${item.categoryLabel} ${item.note || ''} ${variantText}`.toLowerCase();
-      return matchesCategory && searchable.includes(q);
+    // Set initial active tab button
+    tabButtons.forEach((b) => {
+      const isMatch = b.dataset.category === activeCategory;
+      b.classList.toggle('active', isMatch);
+      b.setAttribute('aria-selected', isMatch ? 'true' : 'false');
     });
 
-    // Show special banner when viewing Carnes
-    if (categoryBanner) {
-      if (activeCategory === 'carnes') {
-        categoryBanner.classList.add('visible');
-      } else {
-        categoryBanner.classList.remove('visible');
-      }
-    }
-
-    if (filtered.length === 0) {
-      menuGrid.innerHTML = '';
-      menuEmpty.classList.add('visible');
-      return;
-    }
-
-    menuEmpty.classList.remove('visible');
-
-    menuGrid.innerHTML = filtered
-      .map((item) => {
-        const variantsHtml = item.variants
-          ? `<div class="menu-card-variants">
-              ${item.variants
-                .map(
-                  (v) => `
-                <div class="variant-row">
-                  <span class="variant-name">${v.name}</span>
-                  <span class="variant-price">${v.price}</span>
-                </div>`
-                )
-                .join('')}
-            </div>`
-          : '';
-
-        const noteHtml = item.note
-          ? `<div class="menu-card-note">${item.note}</div>`
-          : '';
-
-        return `
-          <article class="menu-card">
-            <div class="menu-card-img">
-              <span class="menu-card-cat">${item.categoryLabel}</span>
-              <img src="${item.image}" alt="${item.title}" loading="lazy" />
-            </div>
-            <div class="menu-card-body">
-              <div class="menu-card-header">
-                <h3 class="menu-card-title">${item.title}</h3>
-                <span class="menu-card-price">${item.price}</span>
-              </div>
-              <p class="menu-card-desc">${item.desc}</p>
-              ${variantsHtml}
-              ${noteHtml}
-            </div>
-          </article>
-        `;
-      })
-      .join('');
-  }
-
-  // Tab click events
-  tabButtons.forEach((btn) => {
-    btn.addEventListener('click', () => {
-      tabButtons.forEach((b) => {
-        b.classList.remove('active');
-        b.setAttribute('aria-selected', 'false');
-      });
-      btn.classList.add('active');
-      btn.setAttribute('aria-selected', 'true');
-      activeCategory = btn.dataset.category;
-      renderMenu();
-    });
-  });
-
-  // Live search input
-  if (searchInput) {
-    searchInput.addEventListener('input', (e) => {
-      searchQuery = e.target.value;
-      if (searchQuery.trim().length > 0) {
-        clearSearchBtn.classList.add('visible');
-        // Automatically switch to 'todos' when searching so user finds dishes across all tabs
-        if (activeCategory !== 'todos') {
-          activeCategory = 'todos';
-          tabButtons.forEach((b) => {
-            const isTodos = b.dataset.category === 'todos';
-            b.classList.toggle('active', isTodos);
-            b.setAttribute('aria-selected', isTodos ? 'true' : 'false');
-          });
+    function updateTabCounts() {
+      tabButtons.forEach((btn) => {
+        const cat = btn.dataset.category;
+        const countEl = btn.querySelector('.tab-count');
+        if (!countEl) return;
+        if (cat === 'todos') {
+          countEl.textContent = MENU_ITEMS.length;
+        } else {
+          const count = MENU_ITEMS.filter((item) => item.category === cat).length;
+          countEl.textContent = count;
         }
-      } else {
-        clearSearchBtn.classList.remove('visible');
-      }
-      renderMenu();
-    });
-  }
-
-  if (clearSearchBtn) {
-    clearSearchBtn.addEventListener('click', () => {
-      searchInput.value = '';
-      searchQuery = '';
-      clearSearchBtn.classList.remove('visible');
-      renderMenu();
-      searchInput.focus();
-    });
-  }
-
-  if (resetMenuBtn) {
-    resetMenuBtn.addEventListener('click', () => {
-      searchInput.value = '';
-      searchQuery = '';
-      clearSearchBtn.classList.remove('visible');
-      activeCategory = 'todos';
-      tabButtons.forEach((b) => {
-        const isTodos = b.dataset.category === 'todos';
-        b.classList.toggle('active', isTodos);
-        b.setAttribute('aria-selected', isTodos ? 'true' : 'false');
       });
-      renderMenu();
+    }
+
+    function renderMenu() {
+      const q = searchQuery.trim().toLowerCase();
+
+      const filtered = MENU_ITEMS.filter((item) => {
+        const matchesCategory = activeCategory === 'todos' || item.category === activeCategory;
+        if (!q) return matchesCategory;
+
+        const variantText = (item.variants || [])
+          .map((v) => `${v.name} ${v.price}`)
+          .join(' ')
+          .toLowerCase();
+
+        const searchable = `${item.title} ${item.desc} ${item.categoryLabel} ${item.note || ''} ${variantText}`.toLowerCase();
+        return matchesCategory && searchable.includes(q);
+      });
+
+      if (categoryBanner) {
+        categoryBanner.classList.toggle('visible', activeCategory === 'carnes');
+      }
+
+      if (filtered.length === 0) {
+        menuGrid.innerHTML = '';
+        if (menuEmpty) menuEmpty.classList.add('visible');
+        return;
+      }
+
+      if (menuEmpty) menuEmpty.classList.remove('visible');
+
+      menuGrid.innerHTML = filtered
+        .map((item) => {
+          const variantsHtml = item.variants
+            ? `<div class="menu-card-variants">
+                ${item.variants
+                  .map(
+                    (v) => `
+                  <div class="variant-row">
+                    <span class="variant-name">${v.name}</span>
+                    <span class="variant-price">${v.price}</span>
+                  </div>`
+                  )
+                  .join('')}
+              </div>`
+            : '';
+
+          const noteHtml = item.note ? `<div class="menu-card-note">${item.note}</div>` : '';
+
+          return `
+            <article class="menu-card">
+              <div class="menu-card-img">
+                <span class="menu-card-cat">${item.categoryLabel}</span>
+                <img src="${item.image}" alt="${item.title}" loading="lazy" />
+              </div>
+              <div class="menu-card-body">
+                <div class="menu-card-header">
+                  <h3 class="menu-card-title">${item.title}</h3>
+                  <span class="menu-card-price">${item.price}</span>
+                </div>
+                <p class="menu-card-desc">${item.desc}</p>
+                ${variantsHtml}
+                ${noteHtml}
+              </div>
+            </article>
+          `;
+        })
+        .join('');
+    }
+
+    tabButtons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        tabButtons.forEach((b) => {
+          b.classList.remove('active');
+          b.setAttribute('aria-selected', 'false');
+        });
+        btn.classList.add('active');
+        btn.setAttribute('aria-selected', 'true');
+        activeCategory = btn.dataset.category;
+        renderMenu();
+      });
     });
+
+    if (searchInput) {
+      searchInput.addEventListener('input', (e) => {
+        searchQuery = e.target.value;
+        if (searchQuery.trim().length > 0) {
+          clearSearchBtn.classList.add('visible');
+          if (activeCategory !== 'todos') {
+            activeCategory = 'todos';
+            tabButtons.forEach((b) => {
+              const isTodos = b.dataset.category === 'todos';
+              b.classList.toggle('active', isTodos);
+              b.setAttribute('aria-selected', isTodos ? 'true' : 'false');
+            });
+          }
+        } else {
+          clearSearchBtn.classList.remove('visible');
+        }
+        renderMenu();
+      });
+    }
+
+    if (clearSearchBtn) {
+      clearSearchBtn.addEventListener('click', () => {
+        searchInput.value = '';
+        searchQuery = '';
+        clearSearchBtn.classList.remove('visible');
+        renderMenu();
+        searchInput.focus();
+      });
+    }
+
+    if (resetMenuBtn) {
+      resetMenuBtn.addEventListener('click', () => {
+        searchInput.value = '';
+        searchQuery = '';
+        clearSearchBtn.classList.remove('visible');
+        activeCategory = 'todos';
+        tabButtons.forEach((b) => {
+          const isTodos = b.dataset.category === 'todos';
+          b.classList.toggle('active', isTodos);
+          b.setAttribute('aria-selected', isTodos ? 'true' : 'false');
+        });
+        renderMenu();
+      });
+    }
+
+    updateTabCounts();
+    renderMenu();
   }
 
-  // Navbar scroll effect & Mobile Menu
+  // =========================================================================
+  // 3. NAVBAR SCROLL & MOBILE MENU TOGGLE
+  // =========================================================================
   const navbar = document.getElementById('navbar');
   const navToggle = document.getElementById('navToggle');
   const navLinks = document.getElementById('navLinks');
-  const navLinkItems = document.querySelectorAll('.nav-link');
 
   window.addEventListener('scroll', () => {
-    if (window.scrollY > 30) {
-      navbar.classList.add('scrolled');
-    } else {
-      navbar.classList.remove('scrolled');
+    if (navbar) {
+      navbar.classList.toggle('scrolled', window.scrollY > 20);
     }
   });
 
@@ -876,35 +938,5 @@ document.addEventListener('DOMContentLoaded', () => {
       navToggle.classList.toggle('open', isOpen);
       navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
     });
-
-    navLinkItems.forEach((link) => {
-      link.addEventListener('click', () => {
-        navLinks.classList.remove('open');
-        navToggle.classList.remove('open');
-        navToggle.setAttribute('aria-expanded', 'false');
-      });
-    });
   }
-
-  // Active section ScrollSpy
-  const sections = document.querySelectorAll('section[id]');
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const id = entry.target.getAttribute('id');
-          navLinkItems.forEach((link) => {
-            link.classList.toggle('active', link.getAttribute('href') === `#${id}`);
-          });
-        }
-      });
-    },
-    { rootMargin: '-35% 0px -55% 0px' }
-  );
-
-  sections.forEach((sec) => observer.observe(sec));
-
-  // Initial render
-  updateTabCounts();
-  renderMenu();
 });
