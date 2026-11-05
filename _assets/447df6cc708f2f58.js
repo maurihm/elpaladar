@@ -1,0 +1,10 @@
+(globalThis["webpackChunk_canva_web"] = globalThis["webpackChunk_canva_web"] || []).push([[1677],{
+
+/***/ 877769:
+function(_,__,__webpack_require__){__webpack_require__.n_x=__webpack_require__.n;const __web_req__=__webpack_require__;__web_req__(368105);__web_req__(828565);globalThis._5f74ec40302898c5a55451c9fbd04240=globalThis._5f74ec40302898c5a55451c9fbd04240||{};(function(__c){var iU=__c.iU;var LW,lMd,mMd,nMd,oMd,pMd,qMd,rMd,sMd,tMd;LW=function(a){return{Sy:__c.UT(1,a),yZ:__c.NT(2,__c.eU("TextAttributes"))}};lMd=function(a,b){b={...kMd,"font-family":b??__c.Ci.zb["font-family"],color:"#000000"};switch(a){case 1:return{Sy:1,yZ:b};case 2:return{Sy:2,yZ:b};case 3:return{Sy:3,yZ:b};case 4:return{Sy:4,yZ:b,format:1};default:throw Error(`Unsupported signature field type: ${a}`);}};mMd=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+nMd={KVa:__c.OT(1,__c.hU(iU({sKa:__c.aU(1,mMd),fullName:__c.VT(2),color:__c.VT(3,/^#[0-9a-fA-F]{6}$/)})))};oMd=iU(LW(1));pMd=iU(LW(2));qMd=iU(LW(3));rMd={...LW(4),format:__c.LT(__c.YT(3,1,2,3),1)};sMd={Eca:__c.aU(1),ce:__c.nU(2,{Sy:void 0},oMd,pMd,qMd,iU(rMd))};tMd={document:__c.RT.of(nMd),C:__c.RT.of(sMd)};__c.vud=__c.pU(tMd);var kMd={"font-weight":void 0,"font-style":void 0,"font-kerning":void 0,"font-feature-liga":void 0,"font-feature-clig":void 0,"font-feature-calt":void 0,"font-size-modifier":void 0,"vertical-align":void 0,"fill-id":void 0,decoration:void 0,strikethrough:void 0,kerning:void 0,link:void 0,"start-us":void 0,"font-size":void 0,leading:void 0,spacing:void 0,direction:void 0,tracking:void 0,"text-transform":void 0,"text-align":void 0,"head-indent":void 0,"list-marker":void 0,"list-level":void 0,"list-number-set":void 0,
+style:void 0,semantics:void 0},uMd=()=>({KVa:new Map});__c.Nud={IWc:1,MWc:{FWc:1,uYc:2,H_c:3},ZWc:mMd,HZc:{dWc:1,PXc:2,uXc:3,EWc:4},m4a:uMd,Ti:()=>({J3c(a){var b=new Map(a.KVa);a.Eca!=null&&a.VLc!=null&&b.set(a.Eca,a.VLc);return{data:{C:{Eca:a.Eca,ce:lMd(a.type,a.IJa)},document:{...uMd(),KVa:b}},J:{width:a.Eca!=null?180:330,height:82}}}}),zd:__c.vud};
+}).call(globalThis,globalThis._5f74ec40302898c5a55451c9fbd04240);}
+
+}])
+//# sourceMappingURL=sourcemaps/447df6cc708f2f58.js.map
