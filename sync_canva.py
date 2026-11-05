@@ -33,10 +33,10 @@ def transform_html(html: str) -> str:
     html = html.replace('content="Especiales"', 'content="El Paladar"')
     html = re.sub(r'\s+crossorigin="anonymous"', "", html)
     html = re.sub(r'\s+integrity="[^"]+"', "", html)
-    # Switch from PRESENTATION ("A?":"C") to SCROLLING ("A?":"A","e":true,"f":false)
+    # Switch from PRESENTATION ("A?":"C") to SCROLLING ("A?":"A","e":false,"f":false)
     html = html.replace(
         '"Z":{"A?":"C","M":"es-MX"',
-        '"Z":{"A?":"A","e":true,"f":false,"M":"es-MX"',
+        '"Z":{"A?":"A","e":false,"f":false,"M":"es-MX"',
     )
     return html
 
