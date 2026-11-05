@@ -747,6 +747,24 @@ document.addEventListener('DOMContentLoaded', () => {
     heroSlider.addEventListener('mouseenter', stopAutoPlay);
     heroSlider.addEventListener('mouseleave', startAutoPlay);
 
+    // Touch swipe support for mobile phones and tablets
+    let touchStartX = 0;
+    heroSlider.addEventListener('touchstart', (e) => {
+      if (e.changedTouches && e.changedTouches.length > 0) {
+        touchStartX = e.changedTouches[0].screenX;
+      }
+    }, { passive: true });
+
+    heroSlider.addEventListener('touchend', (e) => {
+      if (e.changedTouches && e.changedTouches.length > 0) {
+        const diff = e.changedTouches[0].screenX - touchStartX;
+        if (Math.abs(diff) > 45) {
+          goToSlide(diff < 0 ? currentSlide + 1 : currentSlide - 1);
+          startAutoPlay();
+        }
+      }
+    }, { passive: true });
+
     startAutoPlay();
   }
 
