@@ -1,0 +1,10 @@
+(globalThis["webpackChunk_canva_web"] = globalThis["webpackChunk_canva_web"] || []).push([[44242],{
+
+/***/ 521703:
+function(_,__,__webpack_require__){__webpack_require__.n_x=__webpack_require__.n;const __web_req__=__webpack_require__;__web_req__(368105);globalThis._5f74ec40302898c5a55451c9fbd04240=globalThis._5f74ec40302898c5a55451c9fbd04240||{};(function(__c){__c.D8d=class{process(a){try{for(let g of a){let h=`${g.name}-${g.spanContext().spanId}`;this.performance.mark(`${h}-start`,{startTime:Math.max(g.startTime,0)});this.performance.mark(`${h}-end`,{startTime:g.endTime});let k=g.aborted,l=g.status==="error",m=g.VD==="event";var b="";if(__c.vb(g))b="UOP: ";else if(m){let v=g.parentSpan;b=v?`Event: ${v.name}.`:"Event: "}l?b=`[Error] ${b}`:k&&(b=`[Aborted] ${b}`);let n=`${b}${g.name}`;var c=this.performance,d=c.measure,e=Math.max(g.startTime,0),f=g.VD===
+"event"?(g.endTime??0)+.5:g.endTime;let p=g.status==="error",q=g.aborted,r=g.VD==="event";b=[];let t=g.parentSpan;t!=null&&b.push(["parent",`${t.name} (${t.startTime.toFixed(2)}ms -> ${(t.endTime??-1).toFixed(2)}ms)`]);for(let v of g.b8)b.push(["child",`${v.name} (${v.startTime.toFixed(2)}ms -> ${(v.endTime??-1).toFixed(2)}ms)`]);for(let v of g.b0)b.push(["child_event",`${v.name} (${v.startTime.toFixed(2)}ms)`]);d.call(c,n,{start:e,end:f,detail:{devtools:{dataType:"track-entry",track:"Traces",color:p||
+q?"error":r?"tertiary":void 0,properties:b}}})}}catch(g){this.errorService.Xa(g,{Vb:`Failed to export the span buffer from ${__c.D8d.name}`,extra:new Map(__c.Cb(a))})}finally{this.Ht?.process(a)}}BD(a){this.Ht?.BD(a)}async flush(){return this.Ht?.flush()}constructor(a,b,c=self.performance){this.errorService=a;this.Ht=b;this.performance=c}};__c.E8d={};__c.E8d.wZa=__c.D8d;
+}).call(globalThis,globalThis._5f74ec40302898c5a55451c9fbd04240);}
+
+}])
+//# sourceMappingURL=sourcemaps/294cee38e2d0e512.js.map

@@ -68,6 +68,21 @@ def main() -> None:
     with ThreadPoolExecutor(max_workers=8) as ex:
         list(ex.map(download_asset, assets))
 
+    # Also parse runtime.js and locale *.js for all lazy chunks (including mobile/touch chunks)
+    extra_chunks = set()
+    for a in assets:
+        if a.endswith(".js"):
+            p = os.path.join(ROOT_DIR, a)
+            if os.path.exists(p):
+                with open(p, "r", encoding="utf-8", errors="ignore") as f:
+                    js_content = f.read()
+                for c in re.findall(r'"([a-f0-9]{16}(?:\.[a-zA-Z0-9_-]+)?\.(?:js|css))"', js_content):
+                    extra_chunks.add("_assets/" + c)
+    if extra_chunks:
+        print(f"Checking {len(extra_chunks)} bundle/mobile chunks...")
+        with ThreadPoolExecutor(max_workers=16) as ex:
+            list(ex.map(download_asset, sorted(extra_chunks)))
+
     # Discover any lazy-loaded JS chunks via headless Chrome if available
     requested_404s = set()
 
